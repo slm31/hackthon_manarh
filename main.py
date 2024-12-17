@@ -138,6 +138,13 @@ if uploaded_file:
             st.write(f"**📊 نسبة التطابق:** {float(result['score']):.2f}%")
             st.write(f"**🔍 الجنس:** {result['genus']}")
             st.write(f"**🌳 العائلة:** {result['family']}")
+
+            # **إرسال البيانات إلى ChatGPT**
+            with st.spinner("💬 جاري تحليل البيانات بواسطة الذكاء الاصطناعي..."):
+                analysis_data = f"اسم النبات: {result['scientific_name']}, نسبة التطابق: {result['score']}%"
+                chat_response = chat(analysis_data, location_name)
+                st.markdown("<h3 class='centered subtitle'>💡 التحليل الإضافي:</h3>", unsafe_allow_html=True)
+                st.write(chat_response)
         else:
             st.error("❌ تعذر تحليل الصورة. حاول مجددًا.")
 
