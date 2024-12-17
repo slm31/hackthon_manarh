@@ -49,11 +49,11 @@ st.markdown(
 )
 
 # عنوان التطبيق
-st.markdown("<h1 class='centered highlight'>🌟 هاكثون منارة حائل 🌟</h1>", unsafe_allow_html=True)
-st.markdown("<h2 class='centered subtitle'>⛰️ فريق سلمى ⛰️</h2>", unsafe_allow_html=True)
+st.markdown("<h1 class='centered highlight'>هاكثون منارة حائل</h1>", unsafe_allow_html=True)
+st.markdown("<h2 class='centered subtitle'>⛰️فريق سلمى⛰️</h2>", unsafe_allow_html=True)
 
 # تصغير حجم الخريطة
-st.markdown("<h3 class='centered'>🗺️ حدد الموقع وابدأ تحليلك! 🌍</h3>", unsafe_allow_html=True)
+st.markdown("<p class='centered'>🗺️ حدد الموقع وابدأ تحليلك</p>", unsafe_allow_html=True)
 map_center = [25.0, 45.0]
 m = folium.Map(location=map_center, zoom_start=6)
 map_data = st_folium(m, width=500, height=350)  # تصغير الخريطة
