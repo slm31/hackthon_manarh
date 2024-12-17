@@ -12,7 +12,7 @@ PLANT_API_KEY = st.secrets["PLANT_API_KEY"]
 # دالة جلب توقعات الأمطار
 def get_rain_forecast(api_key, lat, lon):
     url = "http://api.weatherapi.com/v1/forecast.json"
-    params = {"key": api_key, "q": f"{lat},{lon}", "days": 30, "aqi": "no", "alerts": "no"}
+    params = {"key": api_key, "q": f"{lat},{lon}", "days": 90, "aqi": "no", "alerts": "no"}
     try:
         response = requests.get(url, params=params)
         if response.status_code == 200:
