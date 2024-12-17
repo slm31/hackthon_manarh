@@ -3,7 +3,7 @@ import folium
 from streamlit_folium import st_folium
 import requests
 from Analisys import convert_image_to_base64, send_image_to_plant_id, display_results
-from ChatGpt import chat
+from ChatGpt import chat  # تأكد من استيراد الدالة chat
 
 # مفاتيح API
 WEATHER_API_KEY = st.secrets["WEATHER_API_KEY"]
@@ -57,7 +57,7 @@ st.markdown('<p class="center-text">🌍 حدد موقع على الخريطة</
 
 map_center = [25.0, 45.0]
 m = folium.Map(location=map_center, zoom_start=6)
-map_data = st_folium(m, width=350, height=350)  # حجم أصغر للخريطة
+map_data = st_folium(m, width=350, height=350)
 
 if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
@@ -93,5 +93,12 @@ if uploaded_file:
                 st.markdown(f'<p class="center-text">🌿 **النبات:** {plant_name}</p>', unsafe_allow_html=True)
                 st.markdown(f'<p class="center-text">🔢 **احتمالية التصنيف:** {probability:.5f}%</p>', unsafe_allow_html=True)
                 st.markdown(f'<p class="center-text">🩺 **الصحة:** {"✅ صحي" if health else "❌ غير صحي"}</p>', unsafe_allow_html=True)
+
+                # استدعاء ChatGPT لتحليل النبات بناءً على البيانات
+                with st.spinner("💬 جاري جلب توصيات ChatGPT..."):
+                    analysis_data = f"اسم النبات: {plant_name}, احتمالية التصنيف: {probability:.2f}%, الموقع: ({lat}, {lon})"
+                    chat_response = chat(analysis_data, f"الموقع: ({lat}, {lon})")
+                    st.markdown("### 📝 توصيات ChatGPT:")
+                    st.write(chat_response)
             else:
                 st.error("فشل في تحليل الصورة.")
