@@ -25,6 +25,24 @@ def get_rain_forecast(api_key, lat, lon):
         ]
     return []
 
+# دالة تحويل الإحداثيات إلى اسم موقع
+def get_location_from_coordinates(lat, lon):
+    try:
+        url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}"
+        headers = {"User-Agent": "MyApp/1.0"}
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            address = data.get("address", {})
+            city = address.get("city", address.get("town", address.get("village", "غير معروف")))
+            state = address.get("state", "")
+            country = address.get("country", "")
+            return f"{city}, {state}, {country}"
+        else:
+            return "تعذر الحصول على اسم الموقع"
+    except Exception as e:
+        return f"حدث خطأ: {e}"
+
 # عنوان التطبيق
 st.title("🌿 مشروع مكافحة التصحر")
 st.write("**حدد الموقع وابدأ تحليلك!**")
@@ -38,6 +56,10 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     lat = map_data["last_clicked"]["lat"]
     lon = map_data["last_clicked"]["lng"]
     st.success(f"📍 الإحداثيات: ({lat:.6f}, {lon:.6f})")
+
+    # تحويل الإحداثيات إلى اسم الموقع
+    location_name = get_location_from_coordinates(lat, lon)
+    st.info(f"🗺️ الموقع: {location_name}")
 
     # زر جلب توقعات الأمطار
     if st.button("☔ جلب توقعات هطول الأمطار"):
@@ -65,8 +87,8 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
 
                 # إرسال البيانات إلى ChatGPT
                 with st.spinner("💬 جاري تحليل البيانات بواسطة الذكاء الاصطناعي..."):
-                    analysis_data = f"اسم النبات: {result['scientific_name']}, نسبة التطابق: {result['score']}, الموقع: ({lat}, {lon})"
-                    chat_response = chat(analysis_data, f"الموقع: ({lat}, {lon})")
+                    analysis_data = f"اسم النبات: {result['scientific_name']}, نسبة التطابق: {result['score']}, الموقع: {location_name}"
+                    chat_response = chat(analysis_data, f"الموقع: {location_name}")
                     st.write("### 💡 التحليل الإضافي:")
                     st.write(chat_response)
             else:
