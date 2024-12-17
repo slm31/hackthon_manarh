@@ -25,6 +25,24 @@ def get_rain_forecast(api_key, lat, lon):
     except Exception as e:
         return f"حدث خطأ: {e}", []
 
+# دالة تحديد اسم الموقع من الإحداثيات
+def get_location_from_coordinates(lat, lon):
+    try:
+        url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}"
+        headers = {"User-Agent": "MyApp/1.0"}
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            address = data.get("address", {})
+            city = address.get("city", address.get("town", address.get("village", "غير معروف")))
+            state = address.get("state", "")
+            country = address.get("country", "")
+            return f"{city}, {state}, {country}"
+        else:
+            return "تعذر الحصول على اسم الموقع"
+    except Exception as e:
+        return f"حدث خطأ: {e}"
+
 # تحسين التصميم
 st.markdown("""
     <style>
@@ -40,10 +58,6 @@ st.markdown("""
             margin-bottom: 10px;
             font-size: 18px;
         }
-        .small-map {
-            width: 600px !important;
-            margin: auto;
-        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -57,48 +71,39 @@ st.markdown('<p class="center-text">🌍 حدد موقع على الخريطة</
 
 map_center = [25.0, 45.0]
 m = folium.Map(location=map_center, zoom_start=6)
-map_data = st_folium(m, width=350, height=350)
+map_data = st_folium(m, width=500, height=400)
 
 if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+    location_name = get_location_from_coordinates(lat, lon)  # تحديد الموقع من الإحداثيات
+
     st.markdown(f'<p class="center-text">📍 الإحداثيات: ({lat:.6f}, {lon:.6f})</p>', unsafe_allow_html=True)
+    st.markdown(f'<p class="center-text">🏙️ الموقع: {location_name}</p>', unsafe_allow_html=True)
 
-    # جلب التوقعات
-    if st.button("☁️ عرض توقعات الأمطار"):
-        with st.spinner("⏳ جاري جلب البيانات..."):
-            location_name, forecasts = get_rain_forecast(WEATHER_API_KEY, lat, lon)
-            if forecasts:
-                st.markdown(f'<p class="center-text">📍 الموقع: {location_name}</p>', unsafe_allow_html=True)
-                for forecast in forecasts:
-                    if forecast["rain"] > 0:
-                        st.markdown(f'<p class="center-text">📅 {forecast["date"]}: 🌧️ {forecast["rain"]} ملم</p>', unsafe_allow_html=True)
-                if not any(f["rain"] > 0 for f in forecasts):
-                    st.info("☀️ لا توجد توقعات بهطول أمطار.")
+    # رفع الصورة وتحليل النبات
+    st.markdown("---")
+    st.markdown('<p class="center-text">🌿 ارفع صورة النبات لتحليلها:</p>', unsafe_allow_html=True)
+    uploaded_file = st.file_uploader("📸 اختر صورة:", type=["jpg", "jpeg", "png"])
+
+    if uploaded_file:
+        with st.spinner("🔍 جارٍ تحليل الصورة..."):
+            st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_container_width=True)
+            base64_image = convert_image_to_base64(uploaded_file)
+            if base64_image:
+                response = send_image_to_plant_id(base64_image, PLANT_API_KEY)
+                if response:
+                    classification, plant_name, probability, health = display_results(response)
+                    st.markdown(f'<p class="center-text">🌿 **النبات:** {plant_name}</p>', unsafe_allow_html=True)
+                    st.markdown(f'<p class="center-text">🔢 **احتمالية التصنيف:** {probability:.5f}%</p>', unsafe_allow_html=True)
+                    st.markdown(f'<p class="center-text">🩺 **الصحة:** {"✅ صحي" if health else "❌ غير صحي"}</p>', unsafe_allow_html=True)
+
+                    # استدعاء ChatGPT لتحليل النبات بناءً على البيانات والموقع
+                    with st.spinner("💬 جاري تحليل النبات ..."):
+                        analysis_data = f"اسم النبات: {plant_name}, احتمالية التصنيف: {probability:.2f}%, الموقع: {location_name}"
+                        chat_response = chat(analysis_data, f"الموقع: {location_name}")
+                        st.markdown("### 📝 التحليل :")
+                        st.write(chat_response)
+                else:
+                    st.error("فشل في تحليل الصورة.")
             else:
-                st.error("تعذر الحصول على البيانات.")
-
-# رفع الصورة
-st.markdown("---")
-st.markdown('<p class="center-text">🌿 ارفع صورة النبات لتحليلها:</p>', unsafe_allow_html=True)
-uploaded_file = st.file_uploader("📸 اختر صورة:", type=["jpg", "jpeg", "png"])
-
-if uploaded_file:
-    with st.spinner("🔍 جارٍ تحليل الصورة..."):
-        st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_container_width=True)
-        base64_image = convert_image_to_base64(uploaded_file)
-        if base64_image:
-            response = send_image_to_plant_id(base64_image, PLANT_API_KEY)
-            if response:
-                classification, plant_name, probability, health = display_results(response)
-                st.markdown(f'<p class="center-text">🌿 **النبات:** {plant_name}</p>', unsafe_allow_html=True)
-                st.markdown(f'<p class="center-text">🔢 **احتمالية التصنيف:** {probability:.5f}%</p>', unsafe_allow_html=True)
-                st.markdown(f'<p class="center-text">🩺 **الصحة:** {"✅ صحي" if health else "❌ غير صحي"}</p>', unsafe_allow_html=True)
-
-                # استدعاء ChatGPT لتحليل النبات بناءً على البيانات
-                with st.spinner("💬 جاري تحليل النبات ..."):
-                    analysis_data = f"اسم النبات: {plant_name}, احتمالية التصنيف: {probability:.2f}%, الموقع: ({lat}, {lon})"
-                    chat_response = chat(analysis_data, f"الموقع: ({lat}, {lon})")
-                    st.markdown("### 📝 التحليل :")
-                    st.write(chat_response)
-            else:
-                st.error("فشل في تحليل الصورة.") 
+                st.error("فشل في تحويل الصورة إلى Base64.")
