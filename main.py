@@ -104,15 +104,42 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     location_name = get_location_from_coordinates(lat, lon)
     st.markdown(f"<p class='centered highlight'>🗺️ الموقع: {location_name}</p>", unsafe_allow_html=True)
 
-# رفع الصورة وتحليلها
+    # زر جلب توقعات الأمطار
+    if st.button("☔ جلب توقعات هطول الأمطار"):
+        st.markdown("<h3 class='centered subtitle'>☁️ توقعات الأمطار</h3>", unsafe_allow_html=True)
+        def get_rain_forecast(api_key, lat, lon):
+            url = "http://api.weatherapi.com/v1/forecast.json"
+            params = {"key": api_key, "q": f"{lat},{lon}", "days": 7}
+            response = requests.get(url, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                return [
+                    {"date": day["date"], "rain": day["day"]["totalprecip_mm"]}
+                    for day in data["forecast"]["forecastday"]
+                ]
+            return []
+
+        forecast = get_rain_forecast(WEATHER_API_KEY, lat, lon)
+        if forecast:
+            for day in forecast:
+                st.markdown(f"<p class='small-text'>📅 {day['date']}: {day['rain']} ملم</p>", unsafe_allow_html=True)
+        else:
+            st.warning("❌ تعذر جلب توقعات الأمطار.")
+
+# نص "اختر صورة" فوق أداة الرفع
 st.markdown(
-    "<div style='text-align: center; margin-bottom: 10px;'>"
-    "<span style='font-size: 18px; font-weight: bold; color: #4CAF50;'>📸 اختر صورة:</span>"
-    "</div>",
+    """
+    <div style='text-align: center; margin-bottom: 10px;'>
+        <span style='font-size: 18px; font-weight: bold; color: #4CAF50;'>📸 اختر صورة:</span>
+    </div>
+    """,
     unsafe_allow_html=True
 )
+
+# أداة رفع الصورة
 uploaded_file = st.file_uploader("", type=["jpg", "jpeg", "png"], key="unique_file_uploader")
 
+# عرض الصورة وتحليلها
 if uploaded_file:
     st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_container_width=True)
     with st.spinner("🔍 جاري تحليل الصورة..."):
@@ -123,13 +150,8 @@ if uploaded_file:
             st.markdown(f"<p class='small-text'>📊 نسبة التطابق: {float(result['score']):.2f}%</p>", unsafe_allow_html=True)
             st.markdown(f"<p class='small-text'>🔍 الجنس: {result['genus']}</p>", unsafe_allow_html=True)
             st.markdown(f"<p class='small-text'>🌳 العائلة: {result['family']}</p>", unsafe_allow_html=True)
-
-            # تحليل البيانات بواسطة ChatGPT
-            with st.spinner("💬 جاري تحليل البيانات بواسطة الذكاء الاصطناعي..."):
-                analysis_data = f"اسم النبات: {result['scientific_name']}, نسبة التطابق: {result['score']}%"
-                chat_response = chat(analysis_data, location_name)
-                st.markdown("<h3 class='centered subtitle'>💡 التحليل الإضافي:</h3>", unsafe_allow_html=True)
-                st.markdown(f"<p class='small-text'>{chat_response}</p>", unsafe_allow_html=True)
+        else:
+            st.error("❌ تعذر تحليل الصورة. حاول مجددًا.")
 
 # تذييل الصفحة
 st.markdown("<div class='footer'>Hakathon Manarah - Team Salma 🌟</div>", unsafe_allow_html=True)
