@@ -54,7 +54,7 @@ if map_data and "last_clicked" in map_data:
 
         with st.spinner("🔍 جاري تحليل الصورة..."):
             # إرسال الصورة إلى PlantNet مباشرة
-            result = send_image_to_plantnet(uploaded_file)
+            result = send_image_to_plantnet(uploaded_file, plantnet_api_key)
             if result:
                 st.write(f"**🔬 اسم النبات العلمي:** {result['scientific_name']}")
                 st.write(f"**🌱 الأسماء الشائعة:** {', '.join(result['common_names'])}")
