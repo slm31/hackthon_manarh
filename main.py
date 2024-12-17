@@ -95,7 +95,7 @@ if uploaded_file:
                 st.markdown(f'<p class="center-text">🩺 **الصحة:** {"✅ صحي" if health else "❌ غير صحي"}</p>', unsafe_allow_html=True)
 
                 # استدعاء ChatGPT لتحليل النبات بناءً على البيانات
-                with st.spinner("💬 جاري جلب توصيات ChatGPT..."):
+                with st.spinner("💬 جاري تحليل النبات ..."):
                     analysis_data = f"اسم النبات: {plant_name}, احتمالية التصنيف: {probability:.2f}%, الموقع: ({lat}, {lon})"
                     chat_response = chat(analysis_data, f"الموقع: ({lat}, {lon})")
                     st.markdown("### 📝 توصيات ChatGPT:")
