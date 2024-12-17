@@ -32,8 +32,8 @@ st.markdown("""
             text-align: center;
             font-family: Arial, sans-serif;
         }
-        h1 { font-size: 30px; color: #4CAF50; }
-        h2 { font-size: 30px; color: #1E88E5; }
+        h1 { font-size: 25px; color: #4CAF50; }
+        h2 { font-size: 20px; color: #1E88E5; }
         .center-text {
             text-align: center;
             margin-top: 10px;
