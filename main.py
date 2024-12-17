@@ -44,14 +44,24 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
 
     # تحويل الإحداثيات إلى موقع
     def get_location_from_coordinates(lat, lon):
-        url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}"
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
-            address = data.get("address", {})
-            return f"{address.get('city', 'غير معروف')}, {address.get('state', '')}, {address.get('country', '')}"
+        try:
+            url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}"
+            headers = {"User-Agent": "HakathonManarah/1.0"}
+            response = requests.get(url, headers=headers)
+    
+            if response.status_code == 200:
+                data = response.json()
+                address = data.get("address", {})
+                city = address.get("city") or address.get("town") or address.get("village", "غير معروف")
+                state = address.get("state", "غير متوفر")
+                country = address.get("country", "غير متوفر")
+                return f"{city}, {state}, {country}"
+            else:
+                st.warning(f"⚠️ حدث خطأ: {response.status_code}. تعذر الاتصال بالخادم.")
+                return "تعذر تحديد الموقع"
+    except Exception as e:
+        st.error(f"❌ حدث استثناء: {e}")
         return "تعذر تحديد الموقع"
-
     location_name = get_location_from_coordinates(lat, lon)
     st.markdown(f"<p class='centered highlight'>🗺️ الموقع: {location_name}</p>", unsafe_allow_html=True)
 
