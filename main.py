@@ -6,8 +6,11 @@ from Analisys import send_image_to_plantnet
 from ChatGpt import chat
 
 # مفاتيح API
-plantnet_api_key = st.secrets["plantnet_api_key"]
 
+
+
+
+plantnet_api_key = st.secrets["plantnet_api_key"]
 WEATHER_API_KEY = st.secrets["WEATHER_API_KEY"]
 def get_rain_forecast(api_key, lat, lon):
     url = "http://api.weatherapi.com/v1/forecast.json"
