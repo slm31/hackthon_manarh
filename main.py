@@ -5,6 +5,42 @@ import requests
 from Analisys import send_image_to_plantnet
 from ChatGpt import chat
 
+# إعداد CSS لتنسيق النصوص والعناصر
+st.markdown(
+    """
+    <style>
+    .centered {
+        text-align: center;
+    }
+    .highlight {
+        font-size: 24px;
+        font-weight: bold;
+        color: #4CAF50;
+    }
+    .subtitle {
+        font-size: 18px;
+        color: #666;
+    }
+    .footer {
+        position: fixed;
+        bottom: 10px;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        color: #aaa;
+    }
+    .stButton>button {
+        display: block;
+        margin: 0 auto;
+        background-color: #4CAF50;
+        color: white;
+        font-weight: bold;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # مفاتيح API
 plantnet_api_key = st.secrets.get("plantnet_api_key", None)
 WEATHER_API_KEY = st.secrets.get("WEATHER_API_KEY", None)
@@ -44,10 +80,8 @@ def get_location_from_coordinates(lat, lon):
         return f"حدث خطأ: {e}"
 
 # عنوان التطبيق
-st.title("هاكثون منارة حائل")
-st.title("🌿فريق سلمى ")
-
-st.write("**حدد الموقع وابدأ تحليلك!**")
+st.markdown("<h1 class='centered highlight'>🌿 فريق سلمى - مكافحة التصحر</h1>", unsafe_allow_html=True)
+st.markdown("<p class='centered subtitle'>حدد الموقع وابدأ تحليلك! 🌍</p>", unsafe_allow_html=True)
 
 # عرض الخريطة
 map_center = [25.0, 45.0]
@@ -61,11 +95,11 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
 
     # تحويل الإحداثيات إلى اسم الموقع
     location_name = get_location_from_coordinates(lat, lon)
-    st.info(f"🗺️ الموقع: {location_name}")
+    st.markdown(f"<p class='centered highlight'>🗺️ الموقع: {location_name}</p>", unsafe_allow_html=True)
 
     # زر جلب توقعات الأمطار
     if st.button("☔ جلب توقعات هطول الأمطار"):
-        st.write("### ☁️ توقعات الأمطار")
+        st.markdown("<h3 class='centered subtitle'>☁️ توقعات الأمطار</h3>", unsafe_allow_html=True)
         forecast = get_rain_forecast(WEATHER_API_KEY, lat, lon)
         if forecast:
             for day in forecast:
@@ -74,7 +108,7 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
             st.warning("❌ تعذر جلب توقعات الأمطار.")
 
     # رفع صورة النبات
-    st.write("### 🌿 تحليل صورة النبات")
+    st.markdown("<h3 class='centered subtitle'>🌿 تحليل صورة النبات</h3>", unsafe_allow_html=True)
     uploaded_file = st.file_uploader("📸 اختر صورة:", type=["jpg", "jpeg", "png"])
     if uploaded_file:
         st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_container_width=True)
@@ -91,9 +125,12 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
                 with st.spinner("💬 جاري تحليل البيانات بواسطة الذكاء الاصطناعي..."):
                     analysis_data = f"اسم النبات: {result['scientific_name']}, نسبة التطابق: {result['score']}, الموقع: {location_name}"
                     chat_response = chat(analysis_data, f"الموقع: {location_name}")
-                    st.write("### 💡 التحليل الإضافي:")
+                    st.markdown("<h3 class='centered subtitle'>💡 التحليل الإضافي:</h3>", unsafe_allow_html=True)
                     st.write(chat_response)
             else:
                 st.error("❌ تعذر تحليل الصورة. حاول مجددًا.")
 else:
     st.warning("⚠️ يرجى تحديد موقع على الخريطة أولاً.")
+
+# تذييل الصفحة
+st.markdown("<div class='footer'>Hakathon Manarah - Team Salma 🌟</div>", unsafe_allow_html=True)
