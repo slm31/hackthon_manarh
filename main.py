@@ -18,7 +18,6 @@ st.markdown(
     }
     .highlight {
         font-size: 15px;
-        font-weight: bold;
         color: #4CAF50;
     }
     .subtitle {
