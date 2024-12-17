@@ -48,7 +48,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # العناوين
-st.markdown("<h1>🌟 هاكثون منارة حائل</h1>", unsafe_allow_html=True)
+st.markdown("<h1> هاكثون منارة حائل</h1>", unsafe_allow_html=True)
 st.markdown("<h2>🏔️ فريق سلمى</h2>", unsafe_allow_html=True)
 
 # الخريطة
