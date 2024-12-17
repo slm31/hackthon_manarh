@@ -147,8 +147,6 @@ if uploaded_file:
                 st.write(chat_response)
         else:
             st.error("❌ تعذر تحليل الصورة. حاول مجددًا.")
-else:
-    st.warning("⚠️ يرجى تحديد موقع على الخريطة أولاً.")
 
 # تذييل الصفحة
 st.markdown("<div class='footer'>Hakathon Manarah - Team Salma 🌟</div>", unsafe_allow_html=True)
