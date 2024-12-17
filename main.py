@@ -80,7 +80,7 @@ def get_location_from_coordinates(lat, lon):
         return f"حدث خطأ: {e}"
 
 # عنوان التطبيق
-st.markdown("<h1 class='centered highlight'>🌿 فريق سلمى - مكافحة التصحر</h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='centered highlight'>🌿 فريق سلمى - هاكثون منارة حائل</h1>", unsafe_allow_html=True)
 st.markdown("<p class='centered subtitle'>حدد الموقع وابدأ تحليلك! 🌍</p>", unsafe_allow_html=True)
 
 # عرض الخريطة
