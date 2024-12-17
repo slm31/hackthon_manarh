@@ -41,7 +41,7 @@ st.markdown("""
             font-size: 18px;
         }
         .small-map {
-            width: 600px !important;
+            width: 200px !important;
             margin: auto;
         }
     </style>
