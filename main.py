@@ -28,7 +28,7 @@ st.markdown(
 )
 
 # العنوان
-st.markdown("<h1 class='centered highlight'>🌟 هاكثون منارة حائل 🌟</h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='centered highlight'>هاكثون منارة حائل</h1>", unsafe_allow_html=True)
 st.markdown("<h2 class='centered subtitle'>⛰️ فريق سلمى ⛰️</h2>", unsafe_allow_html=True)
 st.markdown("<h3 class='centered'>🗺️ حدد الموقع وابدأ تحليلك! 🌍</h3>", unsafe_allow_html=True)
 
