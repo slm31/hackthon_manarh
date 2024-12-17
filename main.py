@@ -115,8 +115,6 @@ uploaded_file = st.file_uploader(
     type=["jpg", "jpeg", "png"]
 )
 
-# إضافة نص مخصص بالوسط
-# نص "اختر صورة" فوق أداة الرفع
 # نص "اختر صورة" فوق أداة الرفع
 st.markdown(
     """
@@ -129,10 +127,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# أداة رفع الصورة (مرة واحدة فقط)
+# أداة رفع الصورة (إضافة مفتاح فريد key لتجنب التعارض)
 uploaded_file = st.file_uploader(
     label="",
-    type=["jpg", "jpeg", "png"]
+    type=["jpg", "jpeg", "png"],
+    key="unique_file_uploader"  # إضافة مفتاح فريد
 )
 
 # عرض الصورة المرفوعة
