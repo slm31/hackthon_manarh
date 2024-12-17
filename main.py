@@ -84,7 +84,7 @@ uploaded_file = st.file_uploader("📸 اختر صورة:", type=["jpg", "jpeg",
 
 if uploaded_file:
     with st.spinner("🔍 جارٍ تحليل الصورة..."):
-        st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_column_width=True)
+        st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_container_width=True)
         base64_image = convert_image_to_base64(uploaded_file)
         if base64_image:
             response = send_image_to_plant_id(base64_image, PLANT_API_KEY)
