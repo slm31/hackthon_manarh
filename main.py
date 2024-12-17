@@ -34,7 +34,6 @@ def get_location_from_coordinates(lat, lon):
         if response.status_code == 200:
             data = response.json()
             address = data.get("address", {})
-            city = address.get("city", address.get("town", address.get("village", "غير معروف")))
             state = address.get("state", "")
             country = address.get("country", "")
             return f"{city}, {state}, {country}"
