@@ -32,8 +32,8 @@ st.markdown("""
             text-align: center;
             font-family: Arial, sans-serif;
         }
-        h1 { font-size: 25px; color: #4CAF50; }
-        h2 { font-size: 20px; color: #1E88E5; }
+        h1 { font-size: 20px; color: #4CAF50; }
+        h2 { font-size: 15px; color: #1E88E5; }
         .center-text {
             text-align: center;
             margin-top: 10px;
@@ -48,7 +48,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # العناوين
-st.markdown("<h1> هاكثون منارة حائل</h1>", unsafe_allow_html=True)
+st.markdown("<h1> 🌟هاكثون منارة حائل</h1>", unsafe_allow_html=True)
 st.markdown("<h2>🏔️ فريق سلمى</h2>", unsafe_allow_html=True)
 
 # الخريطة
