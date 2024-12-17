@@ -53,7 +53,7 @@ st.markdown("<h2>🏔️ فريق سلمى</h2>", unsafe_allow_html=True)
 
 # الخريطة
 st.markdown("---")
-st.markdown('<p class="center-text">🌍 حدد موقعك على الخريطة</p>', unsafe_allow_html=True)
+st.markdown('<p class="center-text">🌍 حدد موقع على الخريطة</p>', unsafe_allow_html=True)
 
 map_center = [25.0, 45.0]
 m = folium.Map(location=map_center, zoom_start=6)
