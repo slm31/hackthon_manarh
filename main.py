@@ -107,13 +107,6 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
         else:
             st.warning("❌ تعذر جلب توقعات الأمطار.")
 
-   # رفع صورة النبات
-st.markdown("<h3 class='centered highlight'>🌿 تحليل صورة النبات</h3>", unsafe_allow_html=True)
-
-uploaded_file = st.file_uploader(
-    label="",
-    type=["jpg", "jpeg", "png"]
-)
 
 # نص "اختر صورة" فوق أداة الرفع
 st.markdown(
