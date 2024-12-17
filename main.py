@@ -107,11 +107,29 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
         else:
             st.warning("❌ تعذر جلب توقعات الأمطار.")
 
-    # رفع صورة النبات
-    st.markdown("<h3 class='centered subtitle'>🌿 تحليل صورة النبات</h3>", unsafe_allow_html=True)
-    uploaded_file = st.file_uploader("📸 اختر صورة:", type=["jpg", "jpeg", "png"])
-    if uploaded_file:
-        st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_container_width=True)
+   # رفع صورة النبات
+st.markdown("<h3 class='centered highlight'>🌿 تحليل صورة النبات</h3>", unsafe_allow_html=True)
+
+uploaded_file = st.file_uploader(
+    label="",
+    type=["jpg", "jpeg", "png"]
+)
+
+# إضافة نص مخصص بالوسط
+st.markdown(
+    """
+    <div style='text-align: center; margin-top: -10px;'>
+        <span style='font-size: 18px; font-weight: bold; color: #4CAF50;'>
+            📸 اختر صورة:
+        </span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+if uploaded_file:
+    st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_container_width=True)
+
         with st.spinner("🔍 جاري تحليل الصورة..."):
             result = send_image_to_plantnet(uploaded_file, plantnet_api_key)
             if result:
