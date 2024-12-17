@@ -15,7 +15,7 @@ if not plantnet_api_key or not WEATHER_API_KEY:
 # دالة جلب توقعات الأمطار
 def get_rain_forecast(api_key, lat, lon):
     url = "http://api.weatherapi.com/v1/forecast.json"
-    params = {"key": api_key, "q": f"{lat},{lon}", "days": 3}
+    params = {"key": api_key, "q": f"{lat},{lon}", "days": 30}
     response = requests.get(url, params=params)
     if response.status_code == 200:
         data = response.json()
