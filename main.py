@@ -32,8 +32,8 @@ st.markdown("""
             text-align: center;
             font-family: Arial, sans-serif;
         }
-        h1 { font-size: 50px; color: #4CAF50; }
-        h2 { font-size: 40px; color: #1E88E5; }
+        h1 { font-size: 40px; color: #4CAF50; }
+        h2 { font-size: 30px; color: #1E88E5; }
         .center-text {
             text-align: center;
             margin-top: 10px;
@@ -53,11 +53,11 @@ st.markdown("<h2>🏔️ فريق سلمى</h2>", unsafe_allow_html=True)
 
 # الخريطة
 st.markdown("---")
-st.markdown('<p class="center-text">🌍 حدد موقعك على الخريطة:</p>', unsafe_allow_html=True)
+st.markdown('<p class="center-text">🌍 حدد موقعك على الخريطة</p>', unsafe_allow_html=True)
 
 map_center = [25.0, 45.0]
 m = folium.Map(location=map_center, zoom_start=6)
-map_data = st_folium(m, width=600, height=350)  # حجم أصغر للخريطة
+map_data = st_folium(m, width=350, height=350)  # حجم أصغر للخريطة
 
 if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
