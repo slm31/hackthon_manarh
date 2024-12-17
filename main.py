@@ -49,7 +49,7 @@ st.markdown("<h2 class='centered subtitle'>⛰️ فريق سلمى ⛰️</h2>"
 st.markdown("<h3 class='centered'>🗺️ حدد الموقع وابدأ تحليلك! 🌍</h3>", unsafe_allow_html=True)
 map_center = [25.0, 45.0]
 m = folium.Map(location=map_center, zoom_start=6)
-map_data = st_folium(m, width=500, height=350)  # تقليل العرض والارتفاع
+map_data = st_folium(m, width=500, height=350)  # تصغير الخريطة
 
 if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     lat = map_data["last_clicked"]["lat"]
@@ -76,6 +76,28 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
 
     location_name = get_location_from_coordinates(lat, lon)
     st.markdown(f"<p class='centered highlight'>🗺️ الموقع: {location_name}</p>", unsafe_allow_html=True)
+
+    # زر جلب توقعات الأمطار
+    if st.button("☔ جلب توقعات هطول الأمطار"):
+        st.markdown("<h3 class='centered subtitle'>☁️ توقعات الأمطار</h3>", unsafe_allow_html=True)
+        def get_rain_forecast(api_key, lat, lon):
+            url = "http://api.weatherapi.com/v1/forecast.json"
+            params = {"key": api_key, "q": f"{lat},{lon}", "days": 30}
+            response = requests.get(url, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                return [
+                    {"date": day["date"], "rain": day["day"]["totalprecip_mm"]}
+                    for day in data["forecast"]["forecastday"]
+                ]
+            return []
+
+        forecast = get_rain_forecast(st.secrets.get("WEATHER_API_KEY"), lat, lon)
+        if forecast:
+            for day in forecast:
+                st.write(f"📅 {day['date']}: {day['rain']} ملم")
+        else:
+            st.warning("❌ تعذر جلب توقعات الأمطار.")
 
 # نص "اختر صورة" فوق أداة الرفع
 st.markdown(
