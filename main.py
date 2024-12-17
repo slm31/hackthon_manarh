@@ -37,7 +37,7 @@ def get_location_from_coordinates(lat, lon):
             city = address.get("city", address.get("town", address.get("village", "غير معروف")))
             state = address.get("state", "")
             country = address.get("country", "")
-            return f" {state}, {country}"
+            return f"{city}, {state}, {country}"
         else:
             return "تعذر الحصول على اسم الموقع"
     except Exception as e:
@@ -80,6 +80,20 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     st.markdown(f'<p class="center-text">📍 الإحداثيات: ({lat:.6f}, {lon:.6f})</p>', unsafe_allow_html=True)
     st.markdown(f'<p class="center-text">🏙️ الموقع: {location_name}</p>', unsafe_allow_html=True)
 
+    # جلب توقعات الأمطار
+    if st.button("☁️ عرض توقعات الأمطار"):
+        with st.spinner("⏳ جاري جلب البيانات..."):
+            location_name_rain, forecasts = get_rain_forecast(WEATHER_API_KEY, lat, lon)
+            if forecasts:
+                st.markdown(f'<p class="center-text">📍 الموقع: {location_name_rain}</p>', unsafe_allow_html=True)
+                for forecast in forecasts:
+                    if forecast["rain"] > 0:
+                        st.markdown(f'<p class="center-text">📅 {forecast["date"]}: 🌧️ {forecast["rain"]} ملم</p>', unsafe_allow_html=True)
+                if not any(f["rain"] > 0 for f in forecasts):
+                    st.info("☀️ لا توجد توقعات بهطول أمطار.")
+            else:
+                st.error("تعذر الحصول على البيانات.")
+
     # رفع الصورة وتحليل النبات
     st.markdown("---")
     st.markdown('<p class="center-text">🌿 ارفع صورة النبات لتحليلها:</p>', unsafe_allow_html=True)
@@ -107,3 +121,4 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
                     st.error("فشل في تحليل الصورة.")
             else:
                 st.error("فشل في تحويل الصورة إلى Base64.")
+
