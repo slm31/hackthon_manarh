@@ -17,7 +17,7 @@ st.markdown(
         text-align: center;
     }
     .highlight {
-        font-size: 26px;
+        font-size: 15px;
         font-weight: bold;
         color: #4CAF50;
     }
