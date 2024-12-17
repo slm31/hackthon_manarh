@@ -117,6 +117,7 @@ uploaded_file = st.file_uploader(
 
 # إضافة نص مخصص بالوسط
 # نص "اختر صورة" فوق أداة الرفع
+# نص "اختر صورة" فوق أداة الرفع
 st.markdown(
     """
     <div style='text-align: center; margin-bottom: 10px;'>
@@ -128,7 +129,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# أداة رفع الصورة
+# أداة رفع الصورة (مرة واحدة فقط)
 uploaded_file = st.file_uploader(
     label="",
     type=["jpg", "jpeg", "png"]
