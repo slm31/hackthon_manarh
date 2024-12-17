@@ -6,9 +6,10 @@ from Analisys import convert_image_to_base64, send_image_to_plant_id, display_re
 from ChatGpt import chat
 
 # مفاتيح API
-PLANT_API_KEY = st.secrets["PLANT_API_KEY"]
-WEATHER_API_KEY = st.secrets["WEATHER_API_KEY"]
+PLANT_API_KEY = "jRg00DJIl8d1PzUcbNnrBGb48JuGl9uPU2KNCCo9V7Xi07b3aq"
+WEATHER_API_KEY = "6b72f54fe67b4233baf115910241612"
 
+PLANT_API_KEY = st.secrets["PLANT_API_KEY"]
 
 def get_rain_forecast(api_key, lat, lon):
     url = "http://api.weatherapi.com/v1/forecast.json"
