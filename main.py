@@ -5,6 +5,10 @@ import requests
 from Analisys import send_image_to_plantnet
 from ChatGpt import chat
 
+plantnet_api_key = st.secrets.get("plantnet_api_key")
+WEATHER_API_KEY = st.secrets.get("WEATHER_API_KEY")
+
+
 # إعداد CSS لتنسيق النصوص والعناصر
 st.markdown(
     """
