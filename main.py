@@ -25,24 +25,24 @@ def get_rain_forecast(api_key, lat, lon):
     except Exception as e:
         return f"حدث خطأ: {e}", []
 
-# تحسين التصميم مع ضبط عرض الخريطة والصورة
+# تحسين التصميم
 st.markdown("""
     <style>
         h1, h2 {
             text-align: center;
             font-family: Arial, sans-serif;
         }
-        h1 { font-size: 30px; color: #4CAF50; }
-        h2 { font-size: 20px; color: #1E88E5; }
+        h1 { font-size: 10px; color: #4CAF50; }
+        h2 { font-size: 15px; color: #1E88E5; }
         .center-text {
             text-align: center;
             margin-top: 10px;
             margin-bottom: 10px;
             font-size: 18px;
         }
-        .custom-map {
+        .small-map {
+            width: 600px !important;
             margin: auto;
-            width: 90%;  /* تكبير عرض الخريطة ليكون متناسقًا */
         }
     </style>
 """, unsafe_allow_html=True)
@@ -57,9 +57,7 @@ st.markdown('<p class="center-text">🌍 حدد موقع على الخريطة</
 
 map_center = [25.0, 45.0]
 m = folium.Map(location=map_center, zoom_start=6)
-
-# استخدام حجم مخصص للخريطة
-map_data = st_folium(m, width=700, height=500, returned_objects=[])
+map_data = st_folium(m, width=350, height=350)
 
 if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
@@ -103,4 +101,4 @@ if uploaded_file:
                     st.markdown("### 📝 التحليل :")
                     st.write(chat_response)
             else:
-                st.error("فشل في تحليل الصورة.")
+                st.error("فشل في تحليل الصورة.") 
