@@ -5,9 +5,9 @@ import requests
 from Analisys import send_image_to_plantnet
 from ChatGpt import chat
 
+# مفاتيح API
 plantnet_api_key = st.secrets.get("plantnet_api_key")
 WEATHER_API_KEY = st.secrets.get("WEATHER_API_KEY")
-
 
 # إعداد CSS لتنسيق النصوص والعناصر
 st.markdown(
@@ -39,6 +39,10 @@ st.markdown(
         color: white;
         font-weight: bold;
     }
+    .small-text {
+        font-size: 12px;
+        color: #555;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -54,6 +58,7 @@ map_center = [25.0, 45.0]
 m = folium.Map(location=map_center, zoom_start=6)
 map_data = st_folium(m, width=500, height=350)  # تصغير الخريطة
 
+# تحديد الموقع
 if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     lat = map_data["last_clicked"]["lat"]
     lon = map_data["last_clicked"]["lng"]
@@ -95,10 +100,10 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
                 ]
             return []
 
-        forecast = get_rain_forecast(st.secrets.get("WEATHER_API_KEY"), lat, lon)
+        forecast = get_rain_forecast(WEATHER_API_KEY, lat, lon)
         if forecast:
             for day in forecast:
-                st.write(f"📅 {day['date']}: {day['rain']} ملم")
+                st.markdown(f"<p class='small-text'>📅 {day['date']}: {day['rain']} ملم</p>", unsafe_allow_html=True)
         else:
             st.warning("❌ تعذر جلب توقعات الأمطار.")
 
@@ -127,18 +132,18 @@ if uploaded_file:
     with st.spinner("🔍 جاري تحليل الصورة..."):
         result = send_image_to_plantnet(uploaded_file, plantnet_api_key)
         if result:
-            st.write(f"**🔬 اسم النبات العلمي:** {result['scientific_name']}")
-            st.write(f"**🌱 الأسماء الشائعة:** {', '.join(result['common_names'])}")
-            st.write(f"**📊 نسبة التطابق:** {float(result['score']):.2f}%")
-            st.write(f"**🔍 الجنس:** {result['genus']}")
-            st.write(f"**🌳 العائلة:** {result['family']}")
+            st.markdown(f"<p class='small-text'>🔬 اسم النبات العلمي: {result['scientific_name']}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p class='small-text'>🌱 الأسماء الشائعة: {', '.join(result['common_names'])}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p class='small-text'>📊 نسبة التطابق: {float(result['score']):.2f}%</p>", unsafe_allow_html=True)
+            st.markdown(f"<p class='small-text'>🔍 الجنس: {result['genus']}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p class='small-text'>🌳 العائلة: {result['family']}</p>", unsafe_allow_html=True)
 
             # إرسال البيانات إلى ChatGPT
             with st.spinner("💬 جاري تحليل البيانات بواسطة الذكاء الاصطناعي..."):
                 analysis_data = f"اسم النبات: {result['scientific_name']}, نسبة التطابق: {result['score']}%"
                 chat_response = chat(analysis_data, location_name)
                 st.markdown("<h3 class='centered subtitle'>💡 التحليل الإضافي:</h3>", unsafe_allow_html=True)
-                st.write(chat_response)
+                st.markdown(f"<p class='small-text'>{chat_response}</p>", unsafe_allow_html=True)
         else:
             st.error("❌ تعذر تحليل الصورة. حاول مجددًا.")
 
