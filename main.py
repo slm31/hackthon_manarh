@@ -54,7 +54,7 @@ if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     uploaded_file = st.file_uploader("📸 اختر صورة:", type=["jpg", "jpeg", "png"])
 
     if uploaded_file:
-        st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_column_width=True)
+        st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_container_width=True)
 
         # تحليل الصورة عبر PlantNet
         with st.spinner("🔍 جاري تحليل الصورة..."):
