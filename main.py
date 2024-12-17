@@ -57,7 +57,7 @@ st.markdown('<p class="center-text">🌍 حدد موقع على الخريطة</
 
 map_center = [25.0, 45.0]
 m = folium.Map(location=map_center, zoom_start=6)
-map_data = st_folium(m, width=600, height=600)  # حجم أصغر للخريطة
+map_data = st_folium(m, width=350, height=350)  # حجم أصغر للخريطة
 
 if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
