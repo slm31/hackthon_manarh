@@ -116,9 +116,10 @@ uploaded_file = st.file_uploader(
 )
 
 # إضافة نص مخصص بالوسط
+# نص "اختر صورة" فوق أداة الرفع
 st.markdown(
     """
-    <div style='text-align: center; margin-top: -10px;'>
+    <div style='text-align: center; margin-bottom: 10px;'>
         <span style='font-size: 18px; font-weight: bold; color: #4CAF50;'>
             📸 اختر صورة:
         </span>
@@ -127,9 +128,15 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# أداة رفع الصورة
+uploaded_file = st.file_uploader(
+    label="",
+    type=["jpg", "jpeg", "png"]
+)
+
+# عرض الصورة المرفوعة
 if uploaded_file:
     st.image(uploaded_file, caption="📸 الصورة المرفوعة", use_container_width=True)
-
     with st.spinner("🔍 جاري تحليل الصورة..."):
         result = send_image_to_plantnet(uploaded_file, plantnet_api_key)
         if result:
@@ -138,13 +145,6 @@ if uploaded_file:
             st.write(f"**📊 نسبة التطابق:** {float(result['score']):.2f}%")
             st.write(f"**🔍 الجنس:** {result['genus']}")
             st.write(f"**🌳 العائلة:** {result['family']}")
-
-            # إرسال البيانات إلى ChatGPT
-            with st.spinner("💬 جاري تحليل البيانات بواسطة الذكاء الاصطناعي..."):
-                analysis_data = f"اسم النبات: {result['scientific_name']}, نسبة التطابق: {result['score']}, الموقع: {location_name}"
-                chat_response = chat(analysis_data, f"الموقع: {location_name}")
-                st.markdown("<h3 class='centered subtitle'>💡 التحليل الإضافي:</h3>", unsafe_allow_html=True)
-                st.write(chat_response)
         else:
             st.error("❌ تعذر تحليل الصورة. حاول مجددًا.")
 
