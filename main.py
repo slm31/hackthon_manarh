@@ -41,14 +41,14 @@ st.markdown("""
             font-size: 18px;
         }
         .small-map {
-            width: 200px !important;
+            width: 600px !important;
             margin: auto;
         }
     </style>
 """, unsafe_allow_html=True)
 
 # العناوين
-st.markdown("<h1> 🌟هاكثون منارة حائل</h1>", unsafe_allow_html=True)
+st.markdown("<h1> هاكثون منارة حائل🌟</h1>", unsafe_allow_html=True)
 st.markdown("<h2>🏔️ فريق سلمى</h2>", unsafe_allow_html=True)
 
 # الخريطة
