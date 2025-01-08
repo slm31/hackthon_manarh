@@ -49,8 +49,8 @@ st.markdown(
 )
 
 # عنوان التطبيق
-st.markdown("<h1 class='centered highlight'>هاكثون منارة حائل</h1>", unsafe_allow_html=True)
-st.markdown("<h2 class='centered subtitle'>⛰️فريق سلمى⛰️</h2>", unsafe_allow_html=True)
+st.markdown("<h1 class='centered highlight'> منبت </h1>", unsafe_allow_html=True)
+st.markdown("<h2 class='centered subtitle'>⛰️ نظام يساعد على اعاده التوازن البيئي   ⛰️</h2>", unsafe_allow_html=True)
 
 # تصغير حجم الخريطة
 st.markdown("<p class='centered'>🗺️ حدد الموقع وابدأ تحليلك</p>", unsafe_allow_html=True)
@@ -148,4 +148,4 @@ if uploaded_file:
             st.error("❌ تعذر تحليل الصورة. حاول مجددًا.")
 
 # تذييل الصفحة
-st.markdown("<div class='footer'>Hakathon Manarah - Team Salma 🌟</div>", unsafe_allow_html=True)
+st.markdown("<div class='footer'> Monbet 🌟</div>", unsafe_allow_html=True)
